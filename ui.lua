@@ -32,10 +32,7 @@ local function buildUI(parent, settings, toggleKey)
         return s
     end
 
-    local panel -- forward declare so set_ui_visible can reference it safely
-
     local function set_ui_visible(visible)
-        if not panel then return end -- nil guard
         panel.Visible = visible
         if visible then
             UserInputService.MouseBehavior = Enum.MouseBehavior.Default
@@ -60,13 +57,13 @@ local function buildUI(parent, settings, toggleKey)
         local spad = Instance.new("UIPadding")
         spad.PaddingLeft = UDim.new(0, 16)
         spad.PaddingRight = UDim.new(0, 16)
-        spad.PaddingTop = UDim.new(0, 14)
-        spad.PaddingBottom = UDim.new(0, 4)
+        spad.PaddingTop    = UDim.new(0, 8)
+        spad.PaddingBottom = UDim.new(0, 2)
         spad.Parent = s
 
         local slayout = Instance.new("UIListLayout")
         slayout.SortOrder = Enum.SortOrder.LayoutOrder
-        slayout.Padding = UDim.new(0, 4)
+        slayout.Padding = UDim.new(0, 2)
         slayout.Parent = s
 
         local slabel = Instance.new("TextLabel")
@@ -76,7 +73,7 @@ local function buildUI(parent, settings, toggleKey)
         slabel.TextColor3 = c.TextSecondary
         slabel.BackgroundTransparency = 1
         slabel.TextXAlignment = Enum.TextXAlignment.Left
-        slabel.Size = UDim2.new(1, 0, 0, 16)
+        slabel.Size = UDim2.new(1, 0, 0, 12)
         slabel.LayoutOrder = 0
         slabel.Parent = s
 
@@ -94,7 +91,7 @@ local function buildUI(parent, settings, toggleKey)
 
     local function toggleRow(parent, text, key, order)
         local row = Instance.new("Frame")
-        row.Size = UDim2.new(1, 0, 0, 36)
+        row.Size = UDim2.new(1, 0, 0, 28)
         row.BackgroundTransparency = 1
         row.BorderSizePixel = 0
         row.LayoutOrder = order
@@ -152,7 +149,7 @@ local function buildUI(parent, settings, toggleKey)
     screen_gui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
     screen_gui.Parent = parent
 
-    panel = Instance.new("Frame") -- assigned here, now set_ui_visible can see it
+    local panel = Instance.new("Frame")
     panel.Name = "panel"
     panel.Size = UDim2.new(0, 260, 0, 320)
     panel.AnchorPoint = Vector2.new(0.5, 0.5)
@@ -236,7 +233,7 @@ local function buildUI(parent, settings, toggleKey)
     local key_section = section("keybind", 2)
 
     local key_row = Instance.new("Frame")
-    key_row.Size = UDim2.new(1, 0, 0, 36)
+    key_row.Size = UDim2.new(1, 0, 0, 28)
     key_row.BackgroundTransparency = 1
     key_row.LayoutOrder = 1
     key_row.Parent = key_section
@@ -284,6 +281,7 @@ local function buildUI(parent, settings, toggleKey)
         end)
     end)
 
+    -- set_ui_visible is called here, AFTER panel and all UI elements are created
     set_ui_visible(uivisible)
 
     return {

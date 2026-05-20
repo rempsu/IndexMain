@@ -195,8 +195,6 @@ local function buildUI(parent, settings, toggleKey)
     padding.PaddingRight = UDim.new(0, 0)
     padding.Parent = panel
 
-    set_ui_visible(uivisible)
-
     local header = Instance.new("Frame")
     header.Name = "header"
     header.Size = UDim2.new(1, 0, 0, 48)
@@ -282,6 +280,9 @@ local function buildUI(parent, settings, toggleKey)
             end
         end)
     end)
+
+    -- set_ui_visible is called here, AFTER panel and all UI elements are created
+    set_ui_visible(uivisible)
 
     return {
         gui = screen_gui,

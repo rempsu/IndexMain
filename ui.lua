@@ -233,6 +233,10 @@ local Library do
         NotifHolder = nil,
         Font = nil,
         KeyList = nil,
+
+        BackgroundBlurEnabled = true,
+        BackgroundSnowEnabled = true,
+        BackgroundEffects = nil,
     }
 
     local Keys = {
@@ -690,41 +694,34 @@ local Library do
         end
     end
 
-    local CustomFont = { } do
+    local CustomFont = {} do
         function CustomFont:New(Name, Weight, Style, Data)
-            if isfile(Library.Folders.Assets .. "/" .. Name .. ".json") then
-                return Font.new(getcustomasset(Library.Folders.Assets .. "/" .. Name .. ".json"))
-            end
+            local AssetPath = Library.Folders.Assets .. "/" .. Name .. ".ttf"
+            local FontPath = Library.Folders.Assets .. "/" .. Name .. ".font"
 
-            if not isfile(Library.Folders.Assets .. "/" .. Name .. ".ttf") then 
-                writefile(Library.Folders.Assets .. "/" .. Name .. ".ttf", game:HttpGet(Data.Url))
+            if not isfile(AssetPath) then
+                writefile(AssetPath, game:HttpGet(Data.Url))
             end
 
             local FontData = {
                 name = Name,
-                faces = { {
-                    name = "Regular",
-                    weight = Weight,
-                    style = Style,
-                    assetId = getcustomasset(Library.Folders.Assets .. "/" .. Name .. ".ttf")
-                } }
+                faces = {
+                    {
+                        name = Name,
+                        weight = Weight,
+                        style = Style,
+                        assetId = getcustomasset(AssetPath)
+                    }
+                }
             }
 
-            writefile(Library.Folders.Assets .. "/" .. Name .. ".json", HttpService:JSONEncode(FontData))
-            return Font.new(getcustomasset(Library.Folders.Assets .. "/" .. Name .. ".json"))
+            writefile(FontPath, HttpService:JSONEncode(FontData))
+            return Font.new(getcustomasset(FontPath))
         end
 
-        function CustomFont:Get(Name)
-            if isfile(Library.Folders.Assets .. "/" .. Name .. ".json") then
-                return Font.new(getcustomasset(Library.Folders.Assets .. "/" .. Name .. ".json"))
-            end
-        end
-
-        CustomFont:New("Windows-XP-Tahoma", 200, "Regular", {
-            Url = "https://github.com/sametexe001/luas/raw/refs/heads/main/fonts/windows-xp-tahoma.ttf"
+        Library.Font = CustomFont:New("SmallestPixel7", 400, "Regular", {
+            Url = "https://github.com/sametexe001/luas/raw/refs/heads/main/smallest_pixel-7.ttf"
         })
-
-        Library.Font = CustomFont:Get("Windows-XP-Tahoma")
     end
 
     Library.Holder = Instances:Create("ScreenGui", {
@@ -764,6 +761,173 @@ local Library do
         return getcustomasset(self.Folders.Assets .. "/" .. ImageData[1])
     end
 
+    Library.SetupBackgroundEffects = function(Self)
+        if Library.BackgroundEffects then
+            return
+        end
+
+        local Background = Instances:Create("Frame", {
+            Name = "\0",
+            Parent = Library.Holder.Instance,
+            BackgroundColor3 = FromRGB(0, 0, 0),
+            BackgroundTransparency = 1,
+            BorderSizePixel = 0,
+            Position = UDim2New(0, 0, 0, 0),
+            Size = UDim2New(1, 0, 1, 0),
+            Visible = false,
+            ZIndex = 0
+        })
+
+        local SnowHolder = Instances:Create("Frame", {
+            Name = "\0",
+            Parent = Background.Instance,
+            BackgroundTransparency = 1,
+            BorderSizePixel = 0,
+            ClipsDescendants = true,
+            Position = UDim2New(0, 0, 0, 0),
+            Size = UDim2New(1, 0, 1, 0),
+            ZIndex = 0
+        })
+
+        local BlurEffect = InstanceNew("BlurEffect")
+        BlurEffect.Size = 0
+        BlurEffect.Parent = Camera
+
+        Library.BackgroundEffects = {
+            Background = Background.Instance,
+            SnowHolder = SnowHolder.Instance,
+            BlurEffect = BlurEffect,
+            SnowAsset = "http://www.roblox.com/asset/?id=6871196088",
+            IsSnowing = false
+        }
+
+        Library:Thread(function()
+            while Library and Library.BackgroundEffects do
+                local Effects = Library.BackgroundEffects
+
+                if not Effects.IsSnowing then
+                    task.wait(0.1)
+                    continue
+                end
+
+                local Holder = Effects.SnowHolder
+                if not Holder or not Holder.Parent then
+                    task.wait(0.1)
+                    continue
+                end
+
+                local Width = Holder.AbsoluteSize.X
+                local Height = Holder.AbsoluteSize.Y
+                if Width <= 0 or Height <= 0 then
+                    task.wait(0.1)
+                    continue
+                end
+
+                local Image = InstanceNew("ImageLabel")
+                Image.Name = "\0"
+                Image.Parent = Holder
+                Image.BackgroundTransparency = 1
+                Image.Image = Effects.SnowAsset
+                Image.ZIndex = 0
+
+                local RandomSize = math.random(5, 8)
+                local SpawnX = math.random(0, math.max(0, Width - RandomSize))
+
+                Image.Size = UDim2New(0, RandomSize, 0, RandomSize)
+                Image.Position = UDim2New(0, SpawnX, 0, -10)
+
+                local FallDuration = math.random(20, 40) / 10
+                local SwayX = math.random(-18, 18)
+                local GoalPosition = UDim2New(0, SpawnX + SwayX, 0, Height + 10)
+
+                local FallTween = TweenService:Create(Image,
+                    TweenInfo.new(FallDuration, Enum.EasingStyle.Linear, Enum.EasingDirection.Out), {
+                        Position = GoalPosition,
+                        ImageTransparency = 1
+                    })
+
+                FallTween:Play()
+                Library:Connect(FallTween.Completed, function()
+                    if Image and Image.Parent then
+                        Image:Destroy()
+                    end
+                end)
+
+                task.wait(0.1)
+            end
+        end)
+    end
+
+    Library.SetBackgroundEffectsVisible = function(Self, Bool, Instant)
+        local Effects = Library.BackgroundEffects
+        if not Effects then
+            return
+        end
+
+        local HasAnyEffect = Library.BackgroundBlurEnabled or Library.BackgroundSnowEnabled
+        local IsVisible = Bool and true or false
+        Effects.IsSnowing = IsVisible and Library.BackgroundSnowEnabled
+
+        local TargetTransparency = (IsVisible and HasAnyEffect) and 0.5 or 1
+        local TargetBlur = (IsVisible and Library.BackgroundBlurEnabled) and 20 or 0
+
+        if IsVisible and HasAnyEffect then
+            Effects.Background.Visible = true
+        end
+
+        if Instant then
+            Effects.Background.BackgroundTransparency = TargetTransparency
+            Effects.BlurEffect.Size = TargetBlur
+        else
+            local FadeTween = TweenService:Create(Effects.Background,
+                TweenInfo.new(0.33, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {
+                    BackgroundTransparency = TargetTransparency
+                })
+
+            local BlurTween = TweenService:Create(Effects.BlurEffect,
+                TweenInfo.new(0.33, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {
+                    Size = TargetBlur
+                })
+
+            FadeTween:Play()
+            BlurTween:Play()
+        end
+
+        if (not IsVisible) or (not HasAnyEffect) then
+            task.delay(0.35, function()
+                if not Library or not Library.BackgroundEffects then
+                    return
+                end
+
+                local CurrentEffects = Library.BackgroundEffects
+                if CurrentEffects.IsSnowing then
+                    return
+                end
+
+                CurrentEffects.Background.Visible = false
+
+                for _, Child in CurrentEffects.SnowHolder:GetChildren() do
+                    if Child:IsA("ImageLabel") then
+                        Child:Destroy()
+                    end
+                end
+            end)
+        end
+    end
+
+    Library.SetBackgroundBlurEnabled = function(Self, Bool)
+        Library.BackgroundBlurEnabled = Bool and true or false
+        Library:SetBackgroundEffectsVisible(Library.WindowOpenState or true, true)
+    end
+
+    Library.SetBackgroundSnowEnabled = function(Self, Bool)
+        Library.BackgroundSnowEnabled = Bool and true or false
+        Library:SetBackgroundEffectsVisible(Library.WindowOpenState or true, true)
+    end
+
+    Library:SetupBackgroundEffects()
+    Library:SetBackgroundEffectsVisible(false, true)
+
     Library.Round = function(self, Number, Float)
         local Multiplier = 1 / (Float or 1)
         return MathFloor(Number * Multiplier) / Multiplier
@@ -785,6 +949,18 @@ local Library do
 
         for Index, Value in self.Threads do 
             coroutine.close(Value)
+        end
+
+        if self.BackgroundEffects then
+            self.BackgroundEffects.IsSnowing = false
+
+            if self.BackgroundEffects.BlurEffect and self.BackgroundEffects.BlurEffect.Parent then
+                self.BackgroundEffects.BlurEffect:Destroy()
+            end
+
+            if self.BackgroundEffects.Background and self.BackgroundEffects.Background.Parent then
+                self.BackgroundEffects.Background:Destroy()
+            end
         end
 
         if self.Holder then 

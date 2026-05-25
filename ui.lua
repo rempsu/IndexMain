@@ -720,11 +720,11 @@ local Library do
             end
         end
 
-        CustomFont:New("Windows-XP-Tahoma", 200, "Regular", {
-            Url = "https://github.com/sametexe001/luas/raw/refs/heads/main/fonts/windows-xp-tahoma.ttf"
+        CustomFont:New("SmallestPixel7", 400, "Regular", {
+            Url = "https://github.com/sametexe001/luas/raw/refs/heads/main/smallest_pixel-7.ttf"
         })
 
-        Library.Font = CustomFont:Get("Windows-XP-Tahoma")
+        Library.Font = CustomFont:Get("SmallestPixel7")
     end
 
     Library.Holder = Instances:Create("ScreenGui", {
@@ -796,7 +796,6 @@ local Library do
     end
 
     Library.Thread = function(self, Function)
-        if not self or not self.Threads then return end
         local NewThread = coroutine.create(Function)
         
         coroutine.wrap(function()

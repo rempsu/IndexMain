@@ -796,6 +796,7 @@ local Library do
     end
 
     Library.Thread = function(self, Function)
+        if not self or not self.Threads then return end
         local NewThread = coroutine.create(Function)
         
         coroutine.wrap(function()

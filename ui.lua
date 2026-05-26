@@ -579,6 +579,7 @@ local Library do
                 Text = "◢",
 				TextSize = 10,
 				TextColor3 = FromRGB(255, 255, 255),
+				FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json")
 			})
 
             ResizeButton:Connect("InputBegan", function(Input)

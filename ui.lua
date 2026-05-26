@@ -568,7 +568,7 @@ local Library do
                 Parent = Gui,
                 AnchorPoint = Vector2New(1, 1),
                 BorderColor3 = FromRGB(0, 0, 0),
-                Size = UDim2New(0, 10, 0, 10),
+                Size = UDim2New(0, 8, 0, 8),
                 Position = UDim2New(1, 0, 1, 0),
                 Name = "\0",
                 BorderSizePixel = 0,
@@ -577,16 +577,6 @@ local Library do
                 AutoButtonColor = false,
                 Visible = true,
                 Text = ""
-            })
-
-            Instances:Create("ImageLabel", {
-                Parent = ResizeButton.Instance,
-                Image = "rbxassetid://6153965696",
-                Size = UDim2New(1, 0, 1, 0),
-                BackgroundTransparency = 1,
-                ImageColor3 = FromRGB(255, 255, 255),
-                ScaleType = Enum.ScaleType.Fit,
-                Name = "\0"
             })
 
             ResizeButton:Connect("InputBegan", function(Input)

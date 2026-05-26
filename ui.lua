@@ -576,7 +576,9 @@ local Library do
                 BackgroundColor3 = FromRGB(220, 50, 100),
 				AutoButtonColor = false,
                 Visible = true,
-                Text = ""
+                Text = "⤡",
+				TextSize = 8,
+				TextColor3 = FromRGB(255, 255, 255)
 			})
 
             ResizeButton:Connect("InputBegan", function(Input)

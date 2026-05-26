@@ -568,7 +568,7 @@ local Library do
 				Parent = Gui,
 				AnchorPoint = Vector2New(1, 1),
 				BorderColor3 = FromRGB(0, 0, 0),
-				Size = UDim2New(0, 8, 0, 8),
+				Size = UDim2New(0, 10, 0, 10),
 				Position = UDim2New(1, 0, 1, 0),
                 Name = "\0",
 				BorderSizePixel = 0,
@@ -576,9 +576,9 @@ local Library do
                 BackgroundColor3 = FromRGB(220, 50, 100),
 				AutoButtonColor = false,
                 Visible = true,
-                Text = "⤡",
-				TextSize = 8,
-				TextColor3 = FromRGB(255, 255, 255)
+                Text = "◢",
+				TextSize = 10,
+				TextColor3 = FromRGB(255, 255, 255),
 			})
 
             ResizeButton:Connect("InputBegan", function(Input)

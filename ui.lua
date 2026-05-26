@@ -572,7 +572,8 @@ local Library do
 				Position = UDim2New(1, 0, 1, 0),
                 Name = "\0",
 				BorderSizePixel = 0,
-				BackgroundTransparency = 1,
+				BackgroundTransparency = 0,
+                BackgroundColor3 = FromRGB(220, 50, 100),
 				AutoButtonColor = false,
                 Visible = true,
                 Text = ""
@@ -4305,6 +4306,8 @@ local Library do
             }):AddToTheme({Color = "Border"})
         end
 
+        Items["Outline"]:MakeResizeable(Vector2.new(300, 350), Vector2.new(900, 750))
+        
         function Window:SetOpen(Bool)
             Window.IsOpen = Bool
 

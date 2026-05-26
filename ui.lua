@@ -565,22 +565,29 @@ local Library do
             local ResizeMax = Gui.Parent.AbsoluteSize - Gui.AbsoluteSize
 
             local ResizeButton = Instances:Create("TextButton", {
-				Parent = Gui,
-				AnchorPoint = Vector2New(1, 1),
-				BorderColor3 = FromRGB(0, 0, 0),
-				Size = UDim2New(0, 10, 0, 10),
-				Position = UDim2New(1, 0, 1, 0),
+                Parent = Gui,
+                AnchorPoint = Vector2New(1, 1),
+                BorderColor3 = FromRGB(0, 0, 0),
+                Size = UDim2New(0, 10, 0, 10),
+                Position = UDim2New(1, 0, 1, 0),
                 Name = "\0",
-				BorderSizePixel = 0,
-				BackgroundTransparency = 0,
+                BorderSizePixel = 0,
+                BackgroundTransparency = 0,
                 BackgroundColor3 = FromRGB(220, 50, 100),
-				AutoButtonColor = false,
+                AutoButtonColor = false,
                 Visible = true,
-                Text = "◢",
-				TextSize = 10,
-				TextColor3 = FromRGB(255, 255, 255),
-				FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json")
-			})
+                Text = ""
+            })
+
+            Instances:Create("ImageLabel", {
+                Parent = ResizeButton.Instance,
+                Image = "rbxassetid://6031091006",
+                Size = UDim2New(1, 0, 1, 0),
+                BackgroundTransparency = 1,
+                ImageColor3 = FromRGB(255, 255, 255),
+                ScaleType = Enum.ScaleType.Fit,
+                Name = "\0"
+            })
 
             ResizeButton:Connect("InputBegan", function(Input)
                 if Input.UserInputType == Enum.UserInputType.MouseButton1 or Input.UserInputType == Enum.UserInputType.Touch then

@@ -572,22 +572,22 @@ local Library do
                 Position = UDim2New(1, 0, 1, 0),
                 Name = "\0",
                 BorderSizePixel = 0,
-                BackgroundTransparency = 0,
-                BackgroundColor3 = FromRGB(220, 50, 100),
+                BackgroundTransparency = 1,
                 AutoButtonColor = false,
                 Visible = true,
                 Text = ""
             })
 
-            Instances:Create("ImageLabel", {
-                Parent = ResizeButton.Instance,
-                Image = "rbxassetid://6031091006",
-                Size = UDim2New(1, 0, 1, 0),
-                BackgroundTransparency = 1,
-                ImageColor3 = FromRGB(255, 255, 255),
-                ScaleType = Enum.ScaleType.Fit,
-                Name = "\0"
-            })
+            -- three diagonal dots like a resize grip
+            for i = 1, 3 do
+                InstanceNew("Frame", {
+                    Parent = ResizeButton.Instance,
+                    Size = UDim2New(0, 2, 0, 2),
+                    Position = UDim2New(0, 2 + (i * 2), 0, 10 - (i * 2)),
+                    BackgroundColor3 = FromRGB(220, 50, 100),
+                    BorderSizePixel = 0,
+                })
+            end
 
             ResizeButton:Connect("InputBegan", function(Input)
                 if Input.UserInputType == Enum.UserInputType.MouseButton1 or Input.UserInputType == Enum.UserInputType.Touch then

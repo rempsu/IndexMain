@@ -721,11 +721,7 @@ local Library do
             end
         end
 
-        CustomFont:New("SmallestPixel7", 400, "Regular", {
-            Url = "https://github.com/sametexe001/luas/raw/refs/heads/main/smallest_pixel-7.ttf"
-        })
-
-        Library.Font = CustomFont:Get("SmallestPixel7")
+        Library.Font = Font.new("rbxassetid://12187371840")
     end
 
     Library.Holder = Instances:Create("ScreenGui", {

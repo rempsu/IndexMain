@@ -721,7 +721,11 @@ local Library do
             end
         end
 
-        Library.Font = Font.new("rbxassetid://12187364648")
+        CustomFont:New("Windows-XP-Tahoma", 200, "Regular", {
+            Url = "https://github.com/sametexe001/luas/raw/refs/heads/main/fonts/windows-xp-tahoma.ttf"
+        })
+
+        Library.Font = CustomFont:Get("Windows-XP-Tahoma")
     end
 
     Library.Holder = Instances:Create("ScreenGui", {

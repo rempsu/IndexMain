@@ -119,7 +119,7 @@ local createWorldHitmarker, startHitmarkerLoop = (function()
         end)
     end
 
-    return function(cfg)
+return function(cfg)
         _hitmarkerSettings = cfg.hitmarkerSettings
         _activeHitmarkers  = cfg.activeHitmarkers
         _recentTargets     = cfg.recentTargets
@@ -127,6 +127,6 @@ local createWorldHitmarker, startHitmarkerLoop = (function()
         startLoop(cfg.isUnloading)
         return create
     end
-end)()
+end)
 
 return createWorldHitmarker, startHitmarkerLoop

@@ -128,3 +128,5 @@ local createWorldHitmarker, startHitmarkerLoop = (function()
         return create
     end
 end)()
+
+return createWorldHitmarker, startHitmarkerLoop

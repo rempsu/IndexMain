@@ -2447,35 +2447,41 @@ local Library do
         end
 
         function Dropdown:SetOpen(Bool)
-            Dropdown.IsOpen = Bool 
-
-            if Dropdown.IsOpen then 
-                Debounce = true
-
-                Items["OptionHolder"].Instance.Visible = true
-                Items["OptionHolder"].Instance.ZIndex = 1001
-
-                for Index, Value in Items["OptionHolder"].Instance:GetDescendants() do 
-                    if not StringFind(Value.ClassName, "UI") then 
-                        Value.ZIndex = 1001
-                    end
-                end
-
-                task.wait(0.1)
-                Debounce = false
-            else
-                Items["OptionHolder"].Instance.Visible = false
-                Items["OptionHolder"].Instance.ZIndex = 1
-
-                for Index, Value in Items["OptionHolder"].Instance:GetDescendants() do
-                    if not StringFind(Value.ClassName, "UI") then 
-                        Value.ZIndex = 1
-                    end
-                end
-
-                Debounce = false
-            end
-        end
+		    Dropdown.IsOpen = Bool 
+		
+		    if Dropdown.IsOpen then 
+		        Debounce = true
+		
+		        -- calculate position from the RealDropdown button's absolute position
+		        local abs = Items["RealDropdown"].Instance.AbsolutePosition
+		        local size = Items["RealDropdown"].Instance.AbsoluteSize
+		        Items["OptionHolder"].Instance.Position = UDim2New(0, abs.X + size.X, 0, abs.Y + size.Y + 3)
+		        Items["OptionHolder"].Instance.Size = UDim2New(0, size.X, 0, Data.MaxSize)
+		
+		        Items["OptionHolder"].Instance.Visible = true
+		        Items["OptionHolder"].Instance.ZIndex = 1001
+		
+		        for Index, Value in Items["OptionHolder"].Instance:GetDescendants() do 
+		            if not StringFind(Value.ClassName, "UI") then 
+		                Value.ZIndex = 1001
+		            end
+		        end
+		
+		        task.wait(0.1)
+		        Debounce = false
+		    else
+		        Items["OptionHolder"].Instance.Visible = false
+		        Items["OptionHolder"].Instance.ZIndex = 1
+		
+		        for Index, Value in Items["OptionHolder"].Instance:GetDescendants() do
+		            if not StringFind(Value.ClassName, "UI") then 
+		                Value.ZIndex = 1
+		            end
+		        end
+		
+		        Debounce = false
+		    end
+		end
 
         function Dropdown:Remove(Option)
             if Dropdown.Options[Option] then 

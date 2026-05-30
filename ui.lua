@@ -2361,6 +2361,20 @@ local Library do
                 CanvasSize = UDim2New(0, 0, 0, 0)
             })  Items["OptionHolder"]:AddToTheme({BackgroundColor3 = "Section Background", ScrollBarImageColor3 = "Accent"})
 
+			Items["Blocker"] = Instances:Create("TextButton", {
+			    Parent = Library.Holder.Instance,
+			    Size = UDim2New(1, 0, 1, 0),
+			    Position = UDim2New(0, 0, 0, 0),
+			    BackgroundTransparency = 1,
+			    Text = "",
+			    ZIndex = 1000,
+			    Visible = false,
+			    AutoButtonColor = false,
+			    Name = "\0",
+			    BorderSizePixel = 0,
+			    BackgroundColor3 = FromRGB(0, 0, 0),
+			})
+
             Items["Holder"] = Instances:Create("TextButton", {
                 Parent = Items["OptionHolder"].Instance,
                 AutoButtonColor = false,
@@ -2452,12 +2466,12 @@ local Library do
 		    if Dropdown.IsOpen then 
 		        Debounce = true
 		
-		        -- calculate position from the RealDropdown button's absolute position
 		        local abs = Items["RealDropdown"].Instance.AbsolutePosition
 		        local size = Items["RealDropdown"].Instance.AbsoluteSize
-		        Items["OptionHolder"].Instance.Position = UDim2New(0, abs.X + size.X, 0, abs.Y + size.Y + 3)
+		        Items["OptionHolder"].Instance.Position = UDim2New(0, abs.X, 0, abs.Y + size.Y + 3)
 		        Items["OptionHolder"].Instance.Size = UDim2New(0, size.X, 0, Data.MaxSize)
 		
+		        Items["Blocker"].Instance.Visible = true
 		        Items["OptionHolder"].Instance.Visible = true
 		        Items["OptionHolder"].Instance.ZIndex = 1001
 		
@@ -2470,6 +2484,7 @@ local Library do
 		        task.wait(0.1)
 		        Debounce = false
 		    else
+		        Items["Blocker"].Instance.Visible = false
 		        Items["OptionHolder"].Instance.Visible = false
 		        Items["OptionHolder"].Instance.ZIndex = 1
 		
@@ -3489,7 +3504,7 @@ local Library do
                 AutomaticSize = Enum.AutomaticSize.X,
                 Name = "\0",
                 AutoButtonColor = false,
-                AnchorPoint = Vector2New(1, 0),
+                AnchorPoint = Vector2New(0, 0),
                 Size = UDim2New(0, 0, 1, 0),
                 BackgroundTransparency = 1,
                 Position = UDim2New(1, 0, 0, 0),

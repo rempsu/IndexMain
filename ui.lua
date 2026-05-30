@@ -2341,8 +2341,8 @@ local Library do
                 BackgroundColor3 = FromRGB(255, 255, 255)
             })  
 
-            Items["OptionHolder"] = Instances:Create("ScrollingFrame", {
-                Parent = Library.Holder,
+			Items["OptionHolder"] = Instances:Create("ScrollingFrame", {
+			    Parent = Library.Holder.Instance,
                 ScrollBarImageColor3 = FromRGB(31, 226, 130),
                 Active = true,
                 AutomaticCanvasSize = Enum.AutomaticSize.Y,

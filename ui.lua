@@ -2342,7 +2342,7 @@ local Library do
             })  
 
             Items["OptionHolder"] = Instances:Create("ScrollingFrame", {
-                Parent = Items["Dropdown"].Instance,
+                Parent = Library.Holder,
                 ScrollBarImageColor3 = FromRGB(31, 226, 130),
                 Active = true,
                 AutomaticCanvasSize = Enum.AutomaticSize.Y,
@@ -2354,7 +2354,7 @@ local Library do
                 AnchorPoint = Vector2New(1, 0),
                 Visible = false,
                 Name = "\0",
-                Position = UDim2New(1, 0, 1, 3),
+                Position = UDim2New(0, 0, 0, 0),
                 BackgroundColor3 = FromRGB(19, 19, 19),
                 BorderColor3 = FromRGB(0, 0, 0),
                 BorderSizePixel = 0,

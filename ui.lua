@@ -2351,7 +2351,7 @@ local Library do
                 MidImage = "rbxassetid://85239668542938",
                 TopImage = "rbxassetid://85239668542938",
                 BottomImage = "rbxassetid://85239668542938",
-                AnchorPoint = Vector2New(1, 0),
+                AnchorPoint = Vector2New(0, 0),
                 Visible = false,
                 Name = "\0",
                 Position = UDim2New(0, 0, 0, 0),

@@ -5068,7 +5068,7 @@ local Library do
             Default = Data.Default or Data.default or nil,
             Callback = Data.Callback or Data.callback or function() end,
             Tooltip = Data.Tooltip or Data.tooltip or nil,
-            MaxSize = Data.MaxSize or Data.maxsize or 75,
+            MaxSize = Data.MaxSize or Data.maxsize or 150,
             Multi = Data.Multi or Data.multi or false,
         }
 

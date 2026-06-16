@@ -72,7 +72,7 @@ local Library do
 
         Folders = {
             Directory = "index.lol",
-            Configs = "index.lol/assets",
+            Configs = "index.lol/assetconfigs",
             Assets = "index.lol/assets",
         },
 

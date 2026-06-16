@@ -1,11 +1,3 @@
---[[
-    scoot ui library
-    made by samet
-    https://discord.gg/VhvTd5HV8d
-
-    example/documentation is at the bottom
-]]
-
 if Library then
     Library:Unload()
 end
@@ -80,8 +72,8 @@ local Library do
 
         Folders = {
             Directory = "index.lol",
-            Configs = "index.lol/Assets/Configs",
-            Assets = "index.lol/Assets",
+            Configs = "index.lol/assets",
+            Assets = "index.lol/assets",
         },
 
         Images = {

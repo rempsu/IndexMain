@@ -102,6 +102,11 @@ getgenv().Library = {
     TweeningSpeed = .3;
     DraggingSpeed = .05;
     Tweening = false;
+    
+    -- Expose these for the main script
+    KeybindList = nil;
+    Watermark = nil;
+    Window = nil;
 }; do
     Library.__index = Library
 
@@ -502,10 +507,9 @@ getgenv().Library = {
             Flag = properties.Flag or properties.Name or "Colorpicker",
             Callback = properties.Callback or function() end,
 
-            Color = properties.Color or Color3.fromRGB(1, 1, 1), -- Default to white color if not provided
+            Color = properties.Color or Color3.fromRGB(1, 1, 1),
             Alpha = properties.Alpha or properties.Transparency or 0,
 
-            -- Other
             Open = false,
             Items = {};
             Tweening = false;
@@ -947,7 +951,7 @@ getgenv().Library = {
             OldHue = h
             OldAlpha = a
 
-            Color = Items.ColorpickerObject.Instance.BackgroundColor3 -- Overwriting to format<<
+            Color = Items.ColorpickerObject.Instance.BackgroundColor3
 
             if not Items.RGB.Focused then
                 Items.RGB.Items.Textbox.Instance.Text = string.format("%s, %s, %s, %s", Library:Round(Color.R * 255), Library:Round(Color.G * 255), Library:Round(Color.B * 255), Library:Round(1 - a, 0.01))
@@ -1245,7 +1249,7 @@ getgenv().Library = {
         local d = Direction;
         local v = Origin - Position;
 
-        local num = (n.x * v.x) + (n.y * v.y) + (n.z * v.z); -- Dot exists for vector3.new too lazy to test
+        local num = (n.x * v.x) + (n.y * v.y) + (n.z * v.z);
         local den = (n.x * d.x) + (n.y * d.y) + (n.z * d.z);
         local a = -num / den;
 
@@ -1368,6 +1372,7 @@ getgenv().Library = {
             Fps = 0;
             TabInfo;
             Visible = true;
+            Open = false;
         }
 
         local Items = Cfg.Items; do
@@ -1565,7 +1570,7 @@ getgenv().Library = {
                 BackgroundColor3 = Themes.Preset["Background"]
             }):Themify("Background", "BackgroundColor3");
 
-                        -- // keybind list top
+            -- // keybind list top
             Items.KeybindList = Library:Create("Frame",{ZIndex = 999; Parent = Library.HUD.Instance; Size = UDim2.new(0, 200, 0, 31); Position = UDim2.new(0, 37, 0, 401); BorderSizePixel = 0; ZIndex = 2; BackgroundColor3 = Color3.fromRGB(20, 20, 22)})
             Items.UIStroke = Library:Create("UIStroke",{Color = Color3.fromRGB(23, 24, 27); Parent = Items.KeybindList.Instance})
             Items.UIPadding = Library:Create("UIPadding",{PaddingTop = UDim.new(0, 2); PaddingBottom = UDim.new(0, 2); Parent = Items.KeybindList.Instance; PaddingRight = UDim.new(0, 2); PaddingLeft = UDim.new(0, 2)})
@@ -1578,13 +1583,11 @@ getgenv().Library = {
 
             Items.KeybindList:Draggify()
 
-
             -- // Where the keybinds are parented
             Items.KeybindHolder = Library:Create("Frame",{ZIndex = 0; Parent = Items.KeybindList.Instance; Size = UDim2.new(0, 200, 0, 0); Position = UDim2.new(0, -2, 0, 18); BorderSizePixel = 0; BackgroundColor3 = Color3.fromRGB(15, 16, 18)})
             Items.UICorner = Library:Create("UICorner",{Parent = Items.KeybindHolder.Instance})
             Items.UIPadding = Library:Create("UIPadding",{PaddingTop = UDim.new(0, 18); PaddingBottom = UDim.new(0, 2); Parent = Items.KeybindHolder.Instance; PaddingRight = UDim.new(0, 2); PaddingLeft = UDim.new(0, 2)})
             Items.UIStroke = Library:Create("UIStroke",{Color = Color3.fromRGB(23, 24, 27); Parent = Items.KeybindHolder.Instance})
-
 
             -- // Modlist list top
             Items.ModList = Library:Create("Frame",{ZIndex = 999; Parent = Library.HUD.Instance; Size = UDim2.new(0, 200, 0, 31); Position = UDim2.new(0, 37 + 200 + 10, 0, 401); BorderSizePixel = 0; ZIndex = 2; BackgroundColor3 = Color3.fromRGB(20, 20, 22)})
@@ -1623,12 +1626,12 @@ getgenv().Library = {
             Cfg.Size = Vector2.new(AbsoluteSize.X, AbsoluteSize.Y)
         end)
 
+        -- Watermark
         Items.Watermark = Library:Create("CanvasGroup",{Parent = Library.HUD.Instance; Position = UDim2.new(0, 30, 0, 200); BorderSizePixel = 0; AutomaticSize = Enum.AutomaticSize.XY; BackgroundColor3 = Color3.fromRGB(12, 12, 14)}):Draggify()
-        Items.Title = Library:Create("TextLabel",{LayoutOrder = 1; TextColor3 = Color3.fromRGB(245, 245, 245); Text = Cfg.Text; Parent = Items.Watermark.Instance; BackgroundTransparency = 1; BorderSizePixel = 0; AutomaticSize = Enum.AutomaticSize.XY; BackgroundColor3 = Color3.fromRGB(255, 255, 255)})
+        Items.Title = Library:Create("TextLabel",{LayoutOrder = 1; TextColor3 = Color3.fromRGB(245, 245, 245); Text = Cfg.Title; Parent = Items.Watermark.Instance; BackgroundTransparency = 1; BorderSizePixel = 0; AutomaticSize = Enum.AutomaticSize.XY; BackgroundColor3 = Color3.fromRGB(255, 255, 255)})
         Items.UIPadding = Library:Create("UIPadding",{PaddingTop = UDim.new(0, 5); PaddingBottom = UDim.new(0, 7); Parent = Items.Title.Instance; PaddingRight = UDim.new(0, 8); PaddingLeft = UDim.new(0, 8)})
         Items.UIPadding = Library:Create("UIPadding",{PaddingTop = UDim.new(0, 2); PaddingBottom = UDim.new(0, 2); Parent = Items.Watermark.Instance; PaddingRight = UDim.new(0, 2); PaddingLeft = UDim.new(0, 2)})
         Items.UICorner = Library:Create("UICorner",{Parent = Items.Watermark.Instance})
-
 
         local AbsoluteSize = Items.Menu.Instance.AbsoluteSize
         Cfg.Size = Vector2.new(AbsoluteSize.X, AbsoluteSize.Y)
@@ -1651,6 +1654,7 @@ getgenv().Library = {
 
         function Cfg.SetVisible(Bool)
             Cfg.Visible = Bool
+            Cfg.Open = Bool
 
             if not Cfg.IsMobile then
                 Items.Menu:TweenDescendants(Bool, Cfg)
@@ -1692,7 +1696,15 @@ getgenv().Library = {
             end)
         end
 
+        -- Store references
         Library.Window = setmetatable(Cfg, Library)
+        Library.KeybindList = Items.KeybindList
+        Library.Watermark = Items.Watermark
+        
+        -- Add methods to the window
+        function Library.Window:AddTab(Data)
+            return Library.AddTab(Library.Window, Data)
+        end
 
         return Library.Window
     end
@@ -1705,7 +1717,6 @@ getgenv().Library = {
             Icon = Data.Icon or "rbxassetid://108020878442937";
             Pages = Data.Pages or {"Page 1", "Page 2"};
 
-            -- DO NOT TOUCH
             Sections = {};
             Enabled = false;
             Items = {};
@@ -1816,7 +1827,7 @@ getgenv().Library = {
 
             do -- Page
                 Items.MainPage = Library:Create( "Frame", {
-                    Parent = Library.Other.Instance; -- self.Items.Main.Instance
+                    Parent = Library.Other.Instance;
                     Visible = false;
                     BackgroundTransparency = 1;
                     Position = UDim2.new(0, 178, 0, 88);
@@ -1827,7 +1838,7 @@ getgenv().Library = {
 
             do -- Subtabs
                 Items.Holder = Library:Create( "Frame", {
-                    Parent = Library.Other.Instance; -- self.Items.Subtabs.Instance
+                    Parent = Library.Other.Instance;
                     Size = UDim2.new(0, 0, 0, 37);
                     BorderSizePixel = 0;
                     Visible = false;
@@ -1925,7 +1936,7 @@ getgenv().Library = {
 
                 --// Page
                 MiscItems.Page = Library:Create( "Frame", {
-                    Parent = Library.Other.Instance; -- PageParent.Instance
+                    Parent = Library.Other.Instance;
                     BackgroundTransparency = 1;
                     Visible = false;
                     Size = UDim2.new(1, 0, 1, 0);
@@ -2132,7 +2143,6 @@ getgenv().Library = {
                 Position = UDim2.new(0, 1, 0, 0);
                 BorderSizePixel = 0;
                 ClipsDescendants = true;
-                -- AutomaticSize = Enum.AutomaticSize.Y;
                 BackgroundColor3 = Themes.Preset["SectionBackground"]
             }):Themify("SectionBackground", "BackgroundColor3")
 
@@ -2395,7 +2405,6 @@ getgenv().Library = {
         end)
 
         Items.AccentChange.Instance:GetPropertyChangedSignal("BackgroundColor3"):Connect(function()
-            print("hi")
             if Cfg.Enabled then
                 Items.Stroke:Tween({Color = Themes.Preset.Accent})
                 Items.Toggle:Tween({BackgroundColor3 = Themes.Preset.Accent})
@@ -2558,13 +2567,13 @@ getgenv().Library = {
             Callback = Data.Callback or function() end;
             Multi = Data.Multi or false;
 
-            -- Ignore these
             Open = true;
             OptionInstances = {};
             MultiItems = {};
             Items = {};
             Tweening = false;
-        } Cfg.Default = Data.Default or Cfg.Options[1] or "";
+            Default = Data.Default or Data.Options[1] or "";
+        }
 
         local Items = Cfg.Items; do
             do -- Outline
@@ -2919,7 +2928,7 @@ getgenv().Library = {
             })
 
             do -- Keybind holder
-                local Section = Library:AddSection({Text = "Settings"})
+                local Section = Library:AddSection({Title = "Settings"})
                 Items.Dropdown = Section:AddDropdown({Text = "Mode", Flag = Cfg.Flag.."_MODE", Options = {"Toggle", "Hold", "Always"}, Callback = function(Option)
                     if Cfg.Debounce then
                         return
@@ -3102,10 +3111,9 @@ getgenv().Library = {
             Flag = Data.Flag or Data.Name or self.Name or "Colorpicker",
             Callback = Data.Callback or function() end,
 
-            Color = Data.Color or Data.Default or Color3.new(1, 1, 1),  -- Default to white color if not provided
+            Color = Data.Color or Data.Default or Color3.new(1, 1, 1),
             Alpha = Data.Alpha or Data.Transparency or 1,
 
-            -- Other
             Open = false;
             Items = {};
         }
@@ -3362,16 +3370,16 @@ getgenv().Library = {
                     table.insert(Selected, option.Instance.Text)
                     Cfg.MultiItems = Selected
                     option:Tween({TextColor3 = Themes.Preset.Accent})
-                    option.Instance.FontFace = Fonts.Bold
+                    option.Instance.FontFace = Themes.Preset.Font
                     option.Instance.TextSize = 13
                 else
-                    option:Tween({TextColor3 = Themes.Preset.UnselectedElement})
-                    option.Instance.FontFace = Fonts.Elements
+                    option:Tween({TextColor3 = Themes.Preset.Unselected})
+                    option.Instance.FontFace = Themes.Preset.Font
                     option.Instance.TextSize = 13
                 end
             end
 
-            Flags[Cfg.Flag] = if IsTable then Selected else Selected[1]
+            Flags[Cfg.Flag] = IsTable and Selected or Selected[1]
 
             Cfg.Callback(Flags[Cfg.Flag])
         end
@@ -3379,7 +3387,7 @@ getgenv().Library = {
         Cfg.RenderOption = function(name)
             local Button = Library:Create( "TextButton", {
                 FontFace = Themes.Preset.Font;
-                TextColor3 = Themes.Preset["Element Text"];
+                TextColor3 = Themes.Preset["Unselected"];
                 Text = name;
                 Parent = Items.ScrollingFrame.Instance;
                 Size = UDim2.new(1, 0, 0, 0);
@@ -3388,7 +3396,7 @@ getgenv().Library = {
                 TextXAlignment = Enum.TextXAlignment.Left;
                 BorderSizePixel = 0;
                 AutomaticSize = Enum.AutomaticSize.XY
-            }):Themify("Accent", "TextColor3"):Themify("Element Text", "TextColor3")
+            }):Themify("Accent", "TextColor3"):Themify("Unselected", "TextColor3")
             Button.Instance.Text = name
 
             Library:Create( "UIPadding", {
@@ -3404,14 +3412,14 @@ getgenv().Library = {
                         return
                     end
 
-                    Button:Tween({TextColor3 = Themes.Preset.SelectedMultiTabText})
+                    Button:Tween({TextColor3 = Themes.Preset.TextColor})
                 end,
                 function()
                     if Flags[Cfg.Flag] == Button.Instance.Text or (type(Flags[Cfg.Flag]) == "table" and table.find(Flags[Cfg.Flag], Button.Instance.Text)) then
                         return
                     end
 
-                    Button:Tween({TextColor3 = Themes.Preset.UnselectedElement})
+                    Button:Tween({TextColor3 = Themes.Preset.Unselected})
                 end
             )
 
@@ -3581,7 +3589,7 @@ getgenv().Library = {
             end
         end})
 
-        Text = Section:AddInput({Text = "Config Name", Default = "", PlaceHolder = "Config Name:", Flag = "config_Name_text", PlaceHolder = "Type config name here...", Callback = function(text)
+        Text = Section:AddInput({Text = "Config Name", Default = "", PlaceHolder = "Type config name here...", Flag = "config_Name_text", Callback = function(text)
             ConfigText = text
         end})
 
@@ -3592,7 +3600,9 @@ getgenv().Library = {
 
             Library:SaveConfig(ConfigText)
             ConfigHolder:UpdateConfigList()
-        end}):AddButton({Text = "Load", Callback = function()
+        end})
+
+        Section:AddButton({Text = "Load", Callback = function()
             Window.Tweening = true
             if not ConfigText then
                 return
@@ -3614,7 +3624,9 @@ getgenv().Library = {
 
             Library:DeleteConfig(ConfigText)
             ConfigHolder:UpdateConfigList()
-        end}):AddButton({Text = "Refresh", Callback = function()
+        end})
+
+        Section:AddButton({Text = "Refresh", Callback = function()
             ConfigHolder:UpdateConfigList()
         end})
 
@@ -3622,10 +3634,12 @@ getgenv().Library = {
             writefile(Library.Directory.."/Autoload.txt", ConfigText)
             Label.ChangeText("Current Config: " .. readfile(Library.Directory.."/Autoload.txt"))
         end})
+        
         Label = Section:AddLabel({Text = "Current Config: ".. readfile(Library.Directory.."/Autoload.txt")})
+        
         Section:AddButton({Text = "Remove Auto Load", Callback = function()
             writefile(Library.Directory.."/Autoload.txt", "")
-            Label.ChangeTet("Current Config: "..readfile(Library.Directory.."/Autoload.txt"))
+            Label.ChangeText("Current Config: "..readfile(Library.Directory.."/Autoload.txt"))
         end})
 
         local Section = Tab:AddSection({
@@ -3633,7 +3647,7 @@ getgenv().Library = {
             Title = "Theming"
         })
 
-        Section:AddColorPicker({Text = "Accent", Default = Themes.Preset.Accent, Transparency = 0, Flag = Name, Callback = function(Value, Alpha)
+        Section:AddColorPicker({Text = "Accent", Default = Themes.Preset.Accent, Transparency = 0, Flag = "AccentColorPicker", Callback = function(Value, Alpha)
             Library:Refresh("Accent", Value)
         end})
 
@@ -3645,14 +3659,17 @@ getgenv().Library = {
         Section:AddKeyPicker({Text = "Menu bind", Mode = "Toggle", ShowInList = false, Callback = function(Value)
             Window.SetVisible(Value)
         end})
-        Section:AddToggle({Text = "Watermark", Callback = function(Bool)
-            self.Window.Items.Watermark.Instance.Visible = Bool
+        
+        Section:AddToggle({Text = "Watermark", Default = true, Callback = function(Bool)
+            if Library.Watermark then
+                Library.Watermark.Instance.Visible = Bool
+            end
         end})
-        Section:AddToggle({Text = "Mod List", Callback = function(Bool)
-            self.Window.Items.ModList.Instance.Visible = Bool
-        end})
-        Section:AddToggle({Text = "Keybind List", Callback = function(Bool)
-            self.Window.Items.KeybindList.Instance.Visible = Bool
+        
+        Section:AddToggle({Text = "Keybind List", Default = true, Callback = function(Bool)
+            if Library.KeybindList then
+                Library.KeybindList.Instance.Visible = Bool
+            end
         end})
 
         ConfigHolder:UpdateConfigList();
@@ -3673,11 +3690,11 @@ getgenv().Library = {
                 Status = true;
                 Fade = 2;
                 Tick = tick();
-                Index = #self.Keybinds + 1
+                Index = #Library.Keybinds + 1
             }
 
             local Items = Cfg.Items; do
-                Items.Keybind = Library:Create("CanvasGroup",{Parent = self.Window.Items.KeybindHolder.Instance; BackgroundTransparency = 1; Size = UDim2.new(1, 0, 0, 25); BorderSizePixel = 0; BackgroundColor3 = Color3.fromRGB(255, 255, 255)})
+                Items.Keybind = Library:Create("CanvasGroup",{Parent = Library.Window.Items.KeybindHolder.Instance; BackgroundTransparency = 1; Size = UDim2.new(1, 0, 0, 25); BorderSizePixel = 0; BackgroundColor3 = Color3.fromRGB(255, 255, 255)})
                 Items.Name = Library:Create("TextLabel",{LayoutOrder = 1; TextColor3 = Color3.fromRGB(245, 245, 245); Text = "Idfk"; Parent = Items.Keybind.Instance; AutomaticSize = Enum.AutomaticSize.XY; BackgroundTransparency = 1; TextXAlignment = Enum.TextXAlignment.Left; BorderSizePixel = 0; ZIndex = 2; BackgroundColor3 = Color3.fromRGB(255, 255, 255)})
                 Items.UIPadding = Library:Create("UIPadding",{PaddingTop = UDim.new(0, 4); PaddingBottom = UDim.new(0, 6); Parent = Items.Name.Instance; PaddingRight = UDim.new(0, 5); PaddingLeft = UDim.new(0, 7)})
                 Items.Key = Library:Create("TextLabel",{LayoutOrder = 1; Parent = Items.Keybind.Instance; TextColor3 = Color3.fromRGB(170, 170, 170); Text = "[X]"; AutomaticSize = Enum.AutomaticSize.XY; AnchorPoint = Vector2.new(1, 0); Position = UDim2.new(1, 0, 0, 0); BackgroundTransparency = 1; TextXAlignment = Enum.TextXAlignment.Right; BorderSizePixel = 0; ZIndex = 2; BackgroundColor3 = Color3.fromRGB(255, 255, 255)})
@@ -3703,21 +3720,22 @@ getgenv().Library = {
             Cfg:ChangeKey(Cfg.Key)
             Cfg:ChangeName(Cfg.Text)
 
-            self.Keybinds[Cfg.Index] = Cfg
+            Library.Keybinds[Cfg.Index] = Cfg
 
             return setmetatable(Cfg, Library)
         end
 
         Library.LerpKeybinds = function(self)
+            if not Library.Window then return end
             YOffset = 0
             BiggestX = 0
 
             local Tick = tick()
-            for _,Object in self.Keybinds do
+            for _,Object in Library.Keybinds do
                 Object.Fade = Library:Lerp(Object.Fade, Object.Status and 255 or 0, 0.02)
                 local Instance = Object.Items.Keybind.Instance
 
-                local Offset = UDim2.new(0, 0, 0, 0) -- great pasting skills
+                local Offset = UDim2.new(0, 0, 0, 0)
                 local Transparency = 1 - (1 * (Object.Fade / 255))
 
                 Instance.Position = Offset + UDim2.new(0, -(Instance.AbsoluteSize.X - (Instance.AbsoluteSize.X * (Object.Fade / 255))), 0, YOffset)
@@ -3728,7 +3746,7 @@ getgenv().Library = {
                 end
 
                 YOffset += (Instance.AbsoluteSize.Y) * (Object.Fade / 255)
-                self.Window.Items.KeybindHolder.Instance.Size = UDim2.new(0, 200, 0, YOffset + 22)
+                Library.Window.Items.KeybindHolder.Instance.Size = UDim2.new(0, 200, 0, YOffset + 22)
             end
         end
 
@@ -3755,31 +3773,36 @@ getgenv().Library = {
 
             local Cfg = setmetatable({
                 Text = Data.Title or Data.Name or Data.Text or "Title";
+                SubText = Data.SubText or "";
                 Lifetime = Data.Lifetime or 5;
 
                 Items = {};
                 Status = true;
                 Fade = 2;
                 Tick = tick();
-                Index = #self.Notifications + 1
+                Index = #Library.Notifications.Notifs + 1
             }, Library);
 
             local Items = Cfg.Items; do
                 Items.Notification = Library:Create("CanvasGroup",{GroupTransparency = 1; Parent = Library.HUD.Instance; Position = UDim2.new(0, 30, 0, 60); BorderSizePixel = 0; AutomaticSize = Enum.AutomaticSize.XY; BackgroundColor3 = Color3.fromRGB(12, 12, 14)})
                 Items.Accent = Library:Create("Frame",{Parent = Items.Notification.Instance; Position = UDim2.new(0, -3, 1, -1); Size = UDim2.new(0, 0, 0, 4); BorderSizePixel = 0; BackgroundColor3 = Themes.Preset.Accent}):Themify("Accent", "BackgroundColor3")
-                Items.Icon = Library:Create("ImageLabel",{ImageColor3 = Themes.Preset.Accent; Parent = Items.Notification.Instance; AnchorPoint = Vector2.new(0, 0.5); Image = Cfg.Icon; Image = "rbxassetid://82851477751652"; BackgroundTransparency = 1; Position = UDim2.new(0, 5, 0.5, -2); Size = UDim2.new(0, 16, 0, 16); BorderSizePixel = 0; BackgroundColor3 = Color3.fromRGB(255, 255, 255)}):Themify("Accent", "ImageColor3")
+                Items.Icon = Library:Create("ImageLabel",{ImageColor3 = Themes.Preset.Accent; Parent = Items.Notification.Instance; AnchorPoint = Vector2.new(0, 0.5); Image = "rbxassetid://82851477751652"; BackgroundTransparency = 1; Position = UDim2.new(0, 5, 0.5, -2); Size = UDim2.new(0, 16, 0, 16); BorderSizePixel = 0; BackgroundColor3 = Color3.fromRGB(255, 255, 255)}):Themify("Accent", "ImageColor3")
                 Items.Title = Library:Create("TextLabel",{LayoutOrder = 1; TextColor3 = Color3.fromRGB(245, 245, 245); Text = Cfg.Text; Parent = Items.Notification.Instance; BackgroundTransparency = 1; BorderSizePixel = 0; AutomaticSize = Enum.AutomaticSize.XY; BackgroundColor3 = Color3.fromRGB(255, 255, 255)})
                 Items.UIPadding = Library:Create("UIPadding",{PaddingTop = UDim.new(0, 4); PaddingBottom = UDim.new(0, 8); Parent = Items.Title.Instance; PaddingRight = UDim.new(0, 5); PaddingLeft = UDim.new(0, 24)})
+                if Cfg.SubText and Cfg.SubText ~= "" then
+                    Items.SubText = Library:Create("TextLabel",{LayoutOrder = 2; TextColor3 = Color3.fromRGB(170, 170, 170); Text = Cfg.SubText; Parent = Items.Notification.Instance; BackgroundTransparency = 1; BorderSizePixel = 0; AutomaticSize = Enum.AutomaticSize.XY; BackgroundColor3 = Color3.fromRGB(255, 255, 255); Position = UDim2.new(0, 24, 0, 16)})
+                    Items.UIPadding = Library:Create("UIPadding",{PaddingTop = UDim.new(0, 2); PaddingBottom = UDim.new(0, 4); Parent = Items.SubText.Instance; PaddingRight = UDim.new(0, 5); PaddingLeft = UDim.new(0, 5)})
+                end
                 Items.UIPadding = Library:Create("UIPadding",{PaddingTop = UDim.new(0, 2); PaddingBottom = UDim.new(0, 2); Parent = Items.Notification.Instance; PaddingRight = UDim.new(0, 2); PaddingLeft = UDim.new(0, 2)})
                 Items.UICorner = Library:Create("UICorner",{Parent = Items.Notification.Instance})
             end
 
-            self.Notifications.Notifs[Cfg.Index] = Cfg
+            Library.Notifications.Notifs[Cfg.Index] = Cfg
             Items.Accent:Tween({Size = UDim2.new(1, 4, 0, 4)}, TweenInfo.new(Cfg.Lifetime, Library.EasingStyle, Library.EasingDirection, 0, false, 0))
 
             task.delay(Cfg.Lifetime + 1, function()
                 Items.Notification.Instance:Destroy()
-                self.Notifications.Notifs[Cfg.Index] = nil
+                Library.Notifications.Notifs[Cfg.Index] = nil
             end)
 
             return setmetatable(Cfg, Library)
@@ -3790,7 +3813,7 @@ getgenv().Library = {
             BiggestX = 0
 
             local Tick = tick()
-            for _,Object in self.Notifications.Notifs do
+            for _,Object in Library.Notifications.Notifs do
                 if not Object.Fade then
                     Object.Fade = 2;
                 end;
@@ -3838,11 +3861,11 @@ getgenv().Library = {
                 Status = true;
                 Fade = 2;
                 Tick = tick();
-                Index = #self.Mods + 1
+                Index = #Library.Mods + 1
             }
 
             local Items = Cfg.Items; do
-                Items.Mod = Library:Create("CanvasGroup",{Parent = self.Window.Items.ModHolder.Instance; BackgroundTransparency = 1; Size = UDim2.new(1, 0, 0, 25); BorderSizePixel = 0; BackgroundColor3 = Color3.fromRGB(255, 255, 255)})
+                Items.Mod = Library:Create("CanvasGroup",{Parent = Library.Window.Items.ModHolder.Instance; BackgroundTransparency = 1; Size = UDim2.new(1, 0, 0, 25); BorderSizePixel = 0; BackgroundColor3 = Color3.fromRGB(255, 255, 255)})
                 Items.Name = Library:Create("TextLabel",{LayoutOrder = 1; Parent = Items.Mod.Instance; TextColor3 = Color3.fromRGB(170, 170, 170); Text = "[X]"; AutomaticSize = Enum.AutomaticSize.XY; AnchorPoint = Vector2.new(0, 0); Position = UDim2.new(0, 0, 0, 0); BackgroundTransparency = 1; TextXAlignment = Enum.TextXAlignment.Right; BorderSizePixel = 0; ZIndex = 2; BackgroundColor3 = Color3.fromRGB(255, 255, 255)})
                 Items.UIPadding = Library:Create("UIPadding",{PaddingTop = UDim.new(0, 4); PaddingBottom = UDim.new(0, 6); Parent = Items.Name.Instance; PaddingRight = UDim.new(0, 5); PaddingLeft = UDim.new(0, 7)})
             end
@@ -3861,21 +3884,22 @@ getgenv().Library = {
 
             Cfg:ChangeName(Cfg.Text)
 
-            self.Mods[Cfg.Index] = Cfg
+            Library.Mods[Cfg.Index] = Cfg
 
             return setmetatable(Cfg, Library)
         end
 
         Library.LerpMods = function(self)
+            if not Library.Window then return end
             YOffset = 0
             BiggestX = 0
 
             local Tick = tick()
-            for _,Object in self.Mods do
+            for _,Object in Library.Mods do
                 Object.Fade = Library:Lerp(Object.Fade, Object.Status and 255 or 0, 0.02)
                 local Instance = Object.Items.Mod.Instance
 
-                local Offset = UDim2.new(0, 0, 0, 0) -- great pasting skills
+                local Offset = UDim2.new(0, 0, 0, 0)
                 local Transparency = 1 - (1 * (Object.Fade / 255))
 
                 Instance.Position = Offset + UDim2.new(0, -(Instance.AbsoluteSize.X - (Instance.AbsoluteSize.X * (Object.Fade / 255))), 0, YOffset)
@@ -3886,7 +3910,7 @@ getgenv().Library = {
                 end
 
                 YOffset += (Instance.AbsoluteSize.Y) * (Object.Fade / 255)
-                self.Window.Items.ModHolder.Instance.Size = UDim2.new(0, 200, 0, YOffset + 22)
+                Library.Window.Items.ModHolder.Instance.Size = UDim2.new(0, 200, 0, YOffset + 22)
             end
         end
 
@@ -3905,3 +3929,6 @@ getgenv().Library = {
         Library:LerpMods()
     end)
 end
+
+return Library
+]===])()

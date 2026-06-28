@@ -529,8 +529,8 @@ end)
 
 -- script window
 local Window = Library:Window({
-    Name = "index.lol",
-    Logo = "120474185165700",
+    Name = "angelic",
+    Logo = "140599605781248",
 })
 
 -- menu blur and snow hooks
@@ -540,7 +540,7 @@ local menuBlurEffect  = nil
 local menuSnowGui     = nil
 local menuSnowThread  = nil
 
-local Watermark = Library:Watermark("index.lol")
+local Watermark = Library:Watermark("angelic")
 
 local _wmLabel  = nil
 local _wmFrames = 0
@@ -549,7 +549,7 @@ local _wmFPS    = 0
 
 local function findWatermarkLabel()
     for _, obj in ipairs(game:GetService("CoreGui"):GetDescendants()) do
-        if obj:IsA("TextLabel") and obj.Text:find("index%.lol") then
+        if obj:IsA("TextLabel") and obj.Text:find("angelic") then
             _wmLabel = obj
             return
         end
@@ -573,7 +573,7 @@ runservice.Heartbeat:Connect(function()
         findWatermarkLabel()
     end
     if _wmLabel then
-        _wmLabel.Text = string.format("index.lol  |  %s  |  %d fps  |  %d ms",
+        _wmLabel.Text = string.format("angelic  |  %s  |  %d fps  |  %d ms",
             localplayer.Name, _wmFPS, ping)
     end
 end)
@@ -1027,7 +1027,7 @@ local function createLogoHud()
     container.ZIndex      = 10
     container.Parent      = logoHudGui
     local glow = Instance.new("ImageLabel")
-    glow.Image                  = "rbxassetid://120474185165700"
+    glow.Image                  = "rbxassetid://140599605781248"
     glow.Size                   = UDim2.fromOffset(90, 90)
     glow.AnchorPoint            = Vector2.new(0.5, 0)
     glow.Position               = UDim2.new(0.5, 0, 0, -10)
@@ -1037,7 +1037,7 @@ local function createLogoHud()
     glow.ZIndex                 = 9
     glow.Parent                 = container
     local img = Instance.new("ImageLabel")
-    img.Image                  = "rbxassetid://120474185165700"
+    img.Image                  = "rbxassetid://140599605781248"
     img.Size                   = UDim2.fromOffset(70, 70)
     img.AnchorPoint            = Vector2.new(0.5, 0)
     img.Position               = UDim2.new(0.5, 0, 0, 2)
@@ -1046,7 +1046,7 @@ local function createLogoHud()
     img.ZIndex                 = 10
     img.Parent                 = container
     local lbl = Instance.new("TextLabel")
-    lbl.Text                   = "index.lol"
+    lbl.Text                   = "angelic.lol"
     lbl.Size                   = UDim2.new(1, 0, 0, 18)
     lbl.AnchorPoint            = Vector2.new(0.5, 0)
     lbl.Position               = UDim2.new(0.5, 0, 0, 76)
@@ -1702,11 +1702,11 @@ local function startAutoQueue()
 end
 
 -- config system
-local CONFIG_FOLDER = "index.lol/configs"
+local CONFIG_FOLDER = "angelic/configs"
 local CONFIG_EXT    = ".json"
-local AUTOLOAD_FILE = "index.lol/autoload.json"
+local AUTOLOAD_FILE = "angelic/autoload.json"
 
-if not isfolder("index.lol")   then makefolder("index.lol")   end
+if not isfolder("angelic")   then makefolder("angelic")   end
 if not isfolder(CONFIG_FOLDER) then makefolder(CONFIG_FOLDER) end
 
 local function getConfigPath(name) return CONFIG_FOLDER .. "/" .. name .. CONFIG_EXT end
@@ -2693,11 +2693,11 @@ else
 end
 
 -- promocodes
-local promocodes = {
+local promocodes = { 
     "JAILBIRDELITE", "FIRSTPERSONPOSTUPDATE1", "FIRSTPERSON", "NEWGUNSOUNDS",
     "JAILBIRDIANS", "SMILEYOVERHAUL", "80KLIKESJAILBIRD", "MADDERS", "MIRAGON",
     "SERVERFIX", "S5RELEASE", "OPTIMISATION", "DEV_CONSOLE", "JAILBIRDSTARTER",
-    "REMASTERED", "JAILBIRD", "MADDERSYT", "CHIVVEDYT",
+    "REMASTERED", "JAILBIRD", "MADDERSYT", "CHIVVEDYT", "BLACKCELL",
 }
 PromoMiscSection:Button():Add("claim all codes", function()
     local Event = game:GetService("ReplicatedStorage").Events.ClaimPromocode
@@ -3124,7 +3124,7 @@ do
 end
 
 Library:Notification(
-    "index.lol",
+    "angelic",
     "loaded in " .. string.format("%.4f", os.clock() - LoadingTick) .. "s",
     5
 )

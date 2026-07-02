@@ -71,9 +71,9 @@ local Library do
         FadeSpeed = 0.2,
 
         Folders = {
-            Directory = "index.lol",
-            Configs = "index.lol/assetconfigs",
-            Assets = "index.lol/assets",
+            Directory = "angelic",
+            Configs = "angelic/assetconfigs",
+            Assets = "angelic/assets",
         },
 
         Images = {
